@@ -3,10 +3,16 @@ import 'package:get/get.dart';
 import 'package:money_tracker_get_cli/app/data/controller/transaction_db_controller.dart';
 
 class ViewallController extends GetxController {
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   _transactionDatabase.getAlltransactions();
+  // }
+
   final TransactionDatabase _transactionDatabase =
       Get.put(TransactionDatabase());
   List<String> periods = ['All', 'Today', 'Yesterday', 'Month', 'Custom'];
-  dynamic dropdownvalue = "All";
+  RxString dropdownvalue = "All".obs;
   int selectedPageIndex = 0;
   static DateTimeRange? range;
   static DateTime startDate = DateTime.now().add(const Duration(days: -5));
@@ -14,18 +20,18 @@ class ViewallController extends GetxController {
 
   changePage(int value) {
     selectedPageIndex = value;
-    update();
+    // update();
   }
 
   changeDropDownValue(String? value) async {
-    dropdownvalue = value;
-    update();
+    dropdownvalue.value = value!;
+    // update();
     await _transactionDatabase.sortorPeriod(
-        selectedPeriod: dropdownvalue,
+        selectedPeriod: dropdownvalue.toString(),
         selectedPageIndex: selectedPageIndex,
         start: ViewallController.startDate,
         end: ViewallController.endDate);
-    update();
+    // update();
   }
 
   Future dateRangePicker(dynamic context) async {

@@ -148,15 +148,10 @@ class AddIncome extends StatelessWidget {
                 style: ElevatedButton.styleFrom(primary: Colors.black),
                 onPressed: () async {
                   addController.oncClick(true);
-                  await _controller.pickimage();
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content:
-                        Text(img.isEmpty ? "No image added" : "Image added"),
-                    action: SnackBarAction(
-                      label: 'Ok',
-                      onPressed: () {},
-                    ),
-                  ));
+
+                  Get.snackbar(
+                      "", img.isEmpty ? "No image added" : "Image added",
+                      isDismissible: true, snackPosition: SnackPosition.BOTTOM);
                 },
                 child: const Text(
                   'Add Bill (optional)',

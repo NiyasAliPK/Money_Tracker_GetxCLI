@@ -12,6 +12,7 @@ class OverallTabViewAll extends StatelessWidget {
       Get.put(TransactionDatabase());
   @override
   Widget build(BuildContext context) {
+    print(selectedPeriod);
     return Container(
       decoration: const BoxDecoration(
           gradient: LinearGradient(

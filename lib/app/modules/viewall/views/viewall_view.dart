@@ -14,6 +14,7 @@ class ViewallView extends GetView<ViewallController> {
       Get.put(TransactionDatabase());
   @override
   Widget build(BuildContext context) {
+    _viewallController.onInit();
     return DefaultTabController(
       length: 3,
       initialIndex: _viewallController.selectedPageIndex,
@@ -54,34 +55,45 @@ class ViewallView extends GetView<ViewallController> {
                       top: MediaQuery.of(context).size.height * 0.10,
                     ),
                     child: Container(
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      margin: const EdgeInsets.fromLTRB(15, 15, 0, 0),
-                      child: GetBuilder<ViewallController>(
-                          builder: (newController) {
-                        return DropdownButton(
-                          underline: const SizedBox(),
-                          alignment: AlignmentDirectional.center,
-                          hint: Text(_viewallController.dropdownvalue),
-                          items: _viewallController.periods.map((String items) {
-                            return DropdownMenuItem(
-                              value: items,
-                              child: Text(items),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) async {
-                            // Get.offAll(() => ViewallView());
-                            await _viewallController
-                                .changeDropDownValue(newValue);
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        margin: const EdgeInsets.fromLTRB(15, 15, 0, 0),
+                        child: Obx(() {
+                          return DropdownButton(
+                            underline: const SizedBox(),
+                            alignment: AlignmentDirectional.center,
+                            hint: Text(_viewallController.dropdownvalue.value),
+                            items:
+                                _viewallController.periods.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) async {
+                              // Get.offAll(() => ViewallView());
 
-                            if (_viewallController.dropdownvalue == 'Custom') {
-                              await _viewallController.dateRangePicker(context);
-                            }
-                          },
-                        );
-                      }),
-                    ),
+                              await _viewallController
+                                  .changeDropDownValue(newValue);
+
+                              // _transactionDatabase.sortorPeriod(
+                              //     selectedPeriod:
+                              //         _viewallController.dropdownvalue,
+                              //     selectedPageIndex:
+                              //         _viewallController.selectedPageIndex,
+                              //     start: ViewallController.startDate,
+                              //     end: ViewallController.endDate);
+
+                              if (_viewallController.dropdownvalue.value ==
+                                  'Custom') {
+                                await _viewallController
+                                    .dateRangePicker(context);
+                              }
+                            },
+                          );
+                        })),
                   )
                 ],
               ),
@@ -89,7 +101,7 @@ class ViewallView extends GetView<ViewallController> {
                 onTap: ((index) async {
                   _viewallController.changePage(index);
                   await _transactionDatabase.sortorPeriod(
-                      selectedPeriod: _viewallController.dropdownvalue,
+                      selectedPeriod: _viewallController.dropdownvalue.value,
                       selectedPageIndex: _viewallController.selectedPageIndex,
                       start: ViewallController.startDate,
                       end: ViewallController.endDate);
@@ -106,11 +118,11 @@ class ViewallView extends GetView<ViewallController> {
           body: TabBarView(
             children: [
               OverallTabViewAll(
-                  selectedPeriod: _viewallController.dropdownvalue),
+                  selectedPeriod: _viewallController.dropdownvalue.value),
               IncomeTabViewAll(
-                  selectedPeriod: _viewallController.dropdownvalue),
+                  selectedPeriod: _viewallController.dropdownvalue.value),
               ExpenseTabViewAll(
-                  selectedPeriod: _viewallController.dropdownvalue)
+                  selectedPeriod: _viewallController.dropdownvalue.value)
             ],
             physics: const NeverScrollableScrollPhysics(),
           ),
@@ -118,23 +130,4 @@ class ViewallView extends GetView<ViewallController> {
       ),
     );
   }
-
-  // Future dateRangePicker() async {
-  //   final initialDateRange = DateTimeRange(
-  //       start: DateTime.now().add(const Duration(days: -2)),
-  //       end: DateTime.now());
-  //   final newdateRange = await showDateRangePicker(
-  //       context: context,
-  //       firstDate: DateTime(DateTime.now().year - 10),
-  //       lastDate: DateTime.now(),
-  //       initialDateRange: range ?? initialDateRange);
-  //   if (newdateRange == null) return;
-  //   setState(() {
-  //     range = newdateRange;
-  //     startDate = range!.start;
-  //     endDate = range!.end;
-  //   });
-  //   _transactionDatabase
-  //       .sorbyCustomDate(startDate, endDate, selectedPageIndex);
-  // }
 }

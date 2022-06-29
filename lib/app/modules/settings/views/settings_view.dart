@@ -131,25 +131,40 @@ class SettingsView extends GetView<SettingsController> {
                         ]),
                   ),
                   onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (_) {
-                          return AlertDialog(
-                            title: const Text(
-                                'Developed by Niyas Ali using Flutter'),
-                            content: const Text(
-                              'Money Tracker makes managing personal finances as easy as pie! Now easily record your personal and business financial transactions, review your daily, weekly and monthly financial data and manage your precious money with Money Tracker',
-                              style: TextStyle(height: 2),
-                            ),
-                            actions: [
-                              TextButton(
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                  child: const Text('Close'))
-                            ],
-                          );
-                        });
+                    // showDialog(
+                    //     context: context,
+                    //     builder: (_) {
+                    //       return AlertDialog(
+                    //         title: const Text(
+                    //             'Developed by Niyas Ali using Flutter'),
+                    //         content: const Text(
+                    //           'Money Tracker makes managing personal finances as easy as pie! Now easily record your personal and business financial transactions, review your daily, weekly and monthly financial data and manage your precious money with Money Tracker',
+                    //           style: TextStyle(height: 2),
+                    //         ),
+                    //         actions: [
+                    //           TextButton(
+                    //               onPressed: () {
+                    //                 Get.back();
+                    //               },
+                    //               child: const Text('Close'))
+                    //         ],
+                    //       );
+                    //     });
+                    Get.defaultDialog(
+                        title: 'Developed by Niyas Ali using Flutter',
+                        content: const Text(
+                          'Money Tracker makes managing personal finances as easy as pie! Now easily record your personal and business financial transactions, review your daily, weekly and monthly financial data and manage your precious money with Money Tracker',
+                          style: TextStyle(height: 2),
+                        ),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              child: const Text('Close'))
+                        ],
+                        contentPadding: EdgeInsets.all(15),
+                        titlePadding: EdgeInsets.all(20));
                   },
                 ),
                 spacer,
